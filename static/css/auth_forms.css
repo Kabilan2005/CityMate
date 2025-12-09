@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Animated Gradient Background */
+body.auth-body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
+    color: #ffffff;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* The Glass Card */
+.auth-card {
+    width: 100%;
+    max-width: 480px;
+    padding: 2.5rem;
+    
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Text Styles */
+.auth-card .card-title {
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 2.2rem;
+}
+.auth-card .text-muted {
+    color: #e0e0e0 !important;
+    font-size: 1.1rem;
+}
+.auth-card a:not(.btn) {
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+}
+.auth-card a:not(.btn):hover {
+    text-decoration: underline;
+}
+
+/* Form Styles */
+.form-label {
+    color: #ffffff;
+    font-weight: 500;
+}
+.form-control, .form-select,
+.auth-card form input,
+.auth-card form select {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    padding: 12px 15px !important;
+    font-weight: 500 !important;
+    width: 100%;
+}
+
+.form-control:focus, .form-select:focus,
+.auth-card form input:focus,
+.auth-card form select:focus {
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+.form-control::placeholder,
+.auth-card form input::placeholder { color: #d1d1d1; }
+.form-select option { color: #000000; } /* Dropdown options must be dark */
+
+.auth-card form p { margin-bottom: 1.25rem; }
+.auth-card form p label { display: block; margin-bottom: 0.5rem; }
+
+/* Button Styles */
+.btn-primary {
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    background: #ffffff;
+    color: #0d6efd;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+.btn-outline-secondary {
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    background: transparent;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+.btn-outline-secondary:hover {
+    background: #ffffff;
+    color: #333;
+}
+.btn-outline-secondary img {
+    margin-right: 10px;
+    filter: brightness(100); /* Keep Google icon from being white */
+}
+.btn-outline-secondary:hover img {
+    filter: none;
+}

@@ -1,0 +1,34 @@
+{% extends 'users/auth_base.html' %}
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <h2 class="card-title text-center mb-4">Create Account</h2>
+    <p class="text-center text-muted">Step 1: Your details</p>
+    
+    <form method="post" action="{% url 'users:signup' %}"> {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="text-danger small mt-1">{{ form.username.errors.as_text }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-3">
+            <label for="{{ form.contact_info.id_for_label }}" class="form-label">{{ form.contact_info.label }}</label>
+            {{ form.contact_info }}
+            {% if form.contact_info.errors %}
+                <div class="text-danger small mt-1">{{ form.contact_info.errors.as_text }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary">Send Verification Code</button>
+        </div>
+    </form>
+    <div class="text-center mt-4">
+        <p class="text-muted">Already have an account? <a href="{% url 'users:login' %}">Log In</a></p> </div>
+</div>
+{% endblock %}

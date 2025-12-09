@@ -1,0 +1,20 @@
+{% extends 'users/auth_base.html' %}
+{% block title %}Verify Account{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <h2 class="card-title text-center mb-4">Check Your Inbox</h2>
+    <p class="text-center text-muted">A 6-digit code has been sent to <strong>{{ contact_info }}</strong>.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="otp_code" class="form-label">Verification Code</label>
+            <input type="text" class="form-control" id="otp_code" name="otp_code" required autofocus>
+        </div>
+        <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary">Verify</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'users/base.html' %}
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row g-4">
+        
+        <div class="col-md-5">
+            <div class="form-card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title place-row-header" style="border: none; margin-bottom: 1.5rem;">Edit Profile</h5>
+                    
+                    <form method="post" action="{% url 'users:profile' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="text-center mb-3">
+                            {% if user.profile_photo %}
+                                <img src="{{ user.profile_photo.url }}" alt="{{ user.username }}" class="img-thumbnail rounded-circle" width="150" height="150" style="object-fit: cover; border: 4px solid #fd7e14;">
+                            {% else %}
+                                <i class="fas fa-user-circle fa-6x text-primary mb-3"></i>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.profile_photo.id_for_label }}" class="form-label">{{ form.profile_photo.label }}</label>
+                            {{ form.profile_photo }}
+                            {% if form.profile_photo.errors %}<div class="text-danger small mt-1">{{ form.profile_photo.errors.as_text }}</div>{% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
+                            {{ form.username }}
+                            {% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors.as_text }}</div>{% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors.as_text }}</div>{% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.phone_number.id_for_label }}" class="form-label">{{ form.phone_number.label }}</label>
+                            {{ form.phone_number }}
+                            {% if form.phone_number.errors %}<div class="text-danger small mt-1">{{ form.phone_number.errors.as_text }}</div>{% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.age.id_for_label }}" class="form-label">{{ form.age.label }}</label>
+                                {{ form.age }}
+                                {% if form.age.errors %}<div class="text-danger small mt-1">{{ form.age.errors.as_text }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.preferred_city.id_for_label }}" class="form-label">{{ form.preferred_city.label }}</label>
+                                {{ form.preferred_city }}
+                                {% if form.preferred_city.errors %}<div class="text-danger small mt-1">{{ form.preferred_city.errors.as_text }}</div>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.preferred_area.id_for_label }}" class="form-label">{{ form.preferred_area.label }}</label>
+                            {{ form.preferred_area }}
+                            {% if form.preferred_area.errors %}<div class="text-danger small mt-1">{{ form.preferred_area.errors.as_text }}</div>{% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.preferred_price.id_for_label }}" class="form-label">{{ form.preferred_price.label }}</label>
+                            {{ form.preferred_price }}
+                            {% if form.preferred_price.errors %}<div class="text-danger small mt-1">{{ form.preferred_price.errors.as_text }}</div>{% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.taste_tags.id_for_label }}" class="form-label">{{ form.taste_tags.label }}</label>
+                            {{ form.taste_tags }}
+                            {% if form.taste_tags.errors %}<div class="text-danger small mt-1">{{ form.taste_tags.errors.as_text }}</div>{% endif %}
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="form-card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title place-row-header" style="border: none; margin-bottom: 1.5rem;">My Reviews</h5>
+                    {% for review in user_reviews %}
+                        <div class="mb-3 border-bottom pb-2">
+                            <h6><a href="{% url 'places:place_detail' review.place.pk %}" class="text-decoration-none" style="font-weight: 600;">{{ review.place.name }}</a>
+                                <span class="rating-stars float-end" style="color: #fd7e14;">{{ review.rating }} <i class="fas fa-star fa-sm"></i></span>
+                            </h6>
+                            <p class="fst-italic text-muted mb-0">"{{ review.comment|default:"No comment" }}"</p>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">You have not written any reviews yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-card">
+                <div class="card-body">
+                    <h5 class="card-title place-row-header" style="border: none; margin-bottom: 1.5rem;">My Added Places</h5>
+                    {% for place in added_places %}
+                        <div class="mb-2 border-bottom pb-2">
+                             <h6><a href="{% url 'places:place_detail' place.pk %}" class="text-decoration-none" style="font-weight: 600;">{{ place.name }}</a></h6>
+                            <p class="text-muted mb-0">{{ place.address }}</p>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">You have not added any places yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
