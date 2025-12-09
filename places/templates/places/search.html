@@ -1,0 +1,131 @@
+{% extends 'users/base.html' %}
+{% block title %}Search & Filter{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="form-card mb-4">
+    <h1 class="text-center mb-4">Search & Filter Places</h1>
+    
+    <form method="get" id="filter-form">
+      
+      <div class="mb-3">
+        <label class="form-label">Search by Name, Tag, or Description</label>
+        <input type="text" name="q" class="form-control" placeholder="e.g., 'Pizza', 'Cozy', 'Annapoorna'" value="{{ q }}">
+      </div>
+      
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label d-block">Type</label>
+          <div class="pt-2"> 
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="type" id="type_food" value="food" {% if 'food' in types %}checked{% endif %}>
+                  <label class="form-check-label" for="type_food">Food</label>
+              </div>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="type" id="type_stay" value="stay" {% if 'stay' in types %}checked{% endif %}>
+                  <label class="form-check-label" for="type_stay">Stay</label>
+              </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <label class="form-label d-block">Minimum Rating</label>
+          <div class="pt-2">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" name="min_rating" id="rating_4" value="4" {% if '4' in min_ratings %}checked{% endif %}>
+              <label class="form-check-label" for="rating_4">4+ Stars</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" name="min_rating" id="rating_3" value="3" {% if '3' in min_ratings %}checked{% endif %}>
+              <label class="form-check-label" for="rating_3">3+ Stars</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" name="min_rating" id="rating_2" value="2" {% if '2' in min_ratings %}checked{% endif %}>
+              <label class="form-check-label" for="rating_2">2+ Stars</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label d-block">Budget Tier</label>
+          <div class="pt-2"> 
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="price" id="price_econ" value="economical" {% if 'economical' in prices %}checked{% endif %}>
+                  <label class="form-check-label" for="price_econ">Budget Friendly</label>
+              </div>
+              <div class="form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="price" id="price_avg" value="average" {% if 'average' in prices %}checked{% endif %}>
+                  <label class="form-check-label" for="price_avg">Affordable</label>
+              </div>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="price" id="price_prem" value="premium" {% if 'premium' in prices %}checked{% endif %}>
+                  <label class="form-check-label" for="price_prem">Costly</label>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <label class="form-label">Key Locations (Near CIT)</label>
+        <div class="filter-checkbox-list">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="location" id="loc_peelamedu" value="peelamedu" {% if 'peelamedu' in locations %}checked{% endif %}>
+            <label class="form-check-label" for="loc_peelamedu">Peelamedu</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="location" id="loc_hopes" value="hopes" {% if 'hopes' in locations %}checked{% endif %}>
+            <label class="form-check-label" for="loc_hopes">Hope College</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="location" id="loc_singanallur" value="singanallur" {% if 'singanallur' in locations %}checked{% endif %}>
+            <label class="form-check-label" for="loc_singanallur">Singanallur</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="location" id="loc_ram_nagar" value="ram_nagar" {% if 'ram_nagar' in locations %}checked{% endif %}>
+            <label class="form-check-label" for="loc_ram_nagar">Ram Nagar</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="location" id="loc_gandhipuram" value="gandhipuram" {% if 'gandhipuram' in locations %}checked{% endif %}>
+            <label class="form-check-label" for="loc_gandhipuram">Gandhipuram</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="location" id="loc_saibaba_colony" value="saibaba_colony" {% if 'saibaba_colony' in locations %}checked{% endif %}>
+            <label class="form-check-label" for="loc_saibaba_colony">Saibaba Colony</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">Find Places</button>
+      </div>
+    </form>
+  </div>
+
+  {% if active_filters %}
+  <div class="mb-4 d-flex align-items-center flex-wrap">
+    <h5 class="me-3 mb-0">Active Filters:</h5>
+    {% for key, display_val in active_filters.items %}
+      <span class="filter-tag">
+        {{ display_val }}
+        <a href="?{% for k, v in request.GET.items %}{% if k != key %}{{ k }}={{ v|urlencode }}&{% endif %}{% endfor %}" class="btn-close ms-2"></a>
+      </span>
+    {% endfor %}
+    <a href="{% url 'places:search' %}" class="ms-3">Clear All</a>
+  </div>
+  {% endif %}
+
+  <div class="row">
+    {% for place in results %}
+      <div class="col-md-4 mb-4">
+        {% include 'places/place_card.html' %}
+      </div>
+    {% empty %}
+      <div class="col">
+        <div class="form-card text-center">
+            <p class="text-muted mb-0">No places found. Try adjusting your filters.</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

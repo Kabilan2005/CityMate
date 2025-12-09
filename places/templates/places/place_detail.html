@@ -1,0 +1,93 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}{{ place.name }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row g-4">
+        
+        <div class="col-lg-8">
+            <div class="form-card p-0"> 
+                {% if place.photo %}
+                    <img src="{{ place.photo.url }}" class="img-fluid" alt="{{ place.name }}" style="border-radius: 16px 16px 0 0; width: 100%; height: 450px; object-fit: cover;">
+                {% elif place.photo_url %}
+                    <img src="{{ place.photo_url }}" class="img-fluid" alt="{{ place.name }}" style="border-radius: 16px 16px 0 0; width: 100%; height: 450px; object-fit: cover;">
+                {% else %}
+                    <img src="https://via.placeholder.com/800x600.png?text={{ place.name|title }}" class="img-fluid" alt="No image available" style="border-radius: 16px 16px 0 0; width: 100%; height: 450px; object-fit: cover;">
+                {% endif %}
+                
+                <div class="p-4">
+                    <h1 class="card-title" style="font-weight: 700; font-size: 2.5rem; white-space: normal;">{{ place.name }}</h1>
+                    <p class="text-muted fs-5"><i class="fas fa-map-marker-alt fa-sm me-1"></i> {{ place.address }}</p>
+                    
+                    <div class="mb-3">
+                        {% for tag in place.get_tags_list %}
+                            <span class="badge bg-secondary fs-6 me-1" style="padding: 0.5em 0.75em;">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <p class="fs-5 mt-3">{{ place.description }}</p>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5><strong>Contact</strong></h5>
+                            <p class="fs-5">{{ place.contact_info|default:"N/A" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5><strong>Price Level</strong></h5>
+                            <p class="fs-5">{{ place.get_price_level_display }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="form-card mb-4">
+                <h3 class="mb-3" style="font-weight: 600;">Leave a Review</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ review_form.rating.id_for_label }}" class="form-label">{{ review_form.rating.label }}</label>
+                        {{ review_form.rating }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ review_form.comment.id_for_label }}" class="form-label">{{ review_form.comment.label }}</label>
+                        {{ review_form.comment }}
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary mt-2">Submit Review</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="form-card">
+                <h3 class="mb-3" style="font-weight: 600;">What Others Are Saying</h3>
+                {% for review in place.reviews.all %}
+                    <div class="review-box d-flex mb-3">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-user-circle fa-3x"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="mt-0 mb-1" style="font-weight: 600;">{{ review.user.username }}</h5>
+                            <div class="rating-stars mb-2">
+                                {% for i in "12345" %}
+                                    <i class="fas fa-star{% if forloop.counter > review.rating %}-half-alt{% elif forloop.counter > review.rating %}-o{% endif %}"></i>
+                                {% empty %}
+                                    <i class="far fa-star"></i>
+                                {% endfor %}
+                            </div>
+                            <p class="mt-1 mb-0">"{{ review.comment|default:'No comment.' }}"</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No reviews yet. Be the first to add one!</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
